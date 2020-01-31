@@ -1,4 +1,4 @@
-# pipestream smultithread
+# pipestreams multithread 
 A small demonstration of Piped Streams issue with a confined thread pool.
 
 Let us consider a simple case. We have 3 threads conducting the following actions:
