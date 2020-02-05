@@ -26,5 +26,7 @@ The piped outpustream populates the buffer until it fully filled. However becaus
 
 When the amount of data in the source is less than the buffer size, we do not encounter this issue, thus the output stream is gracefully closed, the "download" job is terminated and the "upload" job is started. In this boundary-case scenario it is enough to have 2 threads in a pool.
 
+![](https://github.com/Andremoniy/pipedstreamsmultithread/blob/master/PipedStreams.png)
+
 Having a proper minimum number of threads in a pool (`3` in this case) perfectly solves the issue: 
 [`three_threads_should_not_be_blocked_in_a_confined_thread_pool_with_3_threads_for_a_large_block_of_data`](https://github.com/Andremoniy/pipedstreamsmultithread/blob/master/src/test/java/com/github/andremoniy/pipedstreams/multithread/TestPipedStreamsInConfinedThreadPool.java#L49)
