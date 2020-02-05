@@ -12,10 +12,10 @@ If we have a single `ThreadPool` for all jobs execution, then it is crucial to e
 Let us consider in details what happens here. First we submit a wrapper job (the 3rd in the list) into the thread pool. It internally submits two new tasks (#1 and #2). The order is crucial here, for this example let us consider that the "download" job is submitted first.
 
 If the size of the entire source stream is less or equal than `1024` bytes, it is enough to have `2` threads in the pool to execute the described flow of 3 tasks. 
-This is demonstrated by the test `TestPipeStreamsInConfinedThreadPool#three_threads_should_not_be_blocked_in_a_confined_thread_pool_with_2_threads_for_a_small_block_of_data`.
+This is demonstrated by the test [`TestPipeStreamsInConfinedThreadPool#three_threads_should_not_be_blocked_in_a_confined_thread_pool_with_2_threads_for_a_small_block_of_data`](https://github.com/Andremoniy/pipedstreamsmultithread/blob/master/src/test/java/com/github/andremoniy/pipestreams/multithread/TestPipeStreamsInConfinedThreadPool.java#L23).
 
 However, when the size of the source data exceeds `1024` bytes, then having the thread pool confined by `2` threads becomes an issue. 
-`TestPipeStreamsInConfinedThreadPool#three_threads_should_be_blocked_in_a_confined_thread_pool_with_2_threads_for_a_large_block_of_data` shows that we encounter a `TimeoutException` in this case (and in the worse case we can end-up with a dead-lock situation).
+[`TestPipeStreamsInConfinedThreadPool#three_threads_should_be_blocked_in_a_confined_thread_pool_with_2_threads_for_a_large_block_of_data`](https://github.com/Andremoniy/pipedstreamsmultithread/blob/master/src/test/java/com/github/andremoniy/pipestreams/multithread/TestPipeStreamsInConfinedThreadPool.java#L36) shows that we encounter a `TimeoutException` in this case (and in the worse case we can end-up with a dead-lock situation).
 
 Why? This is mainly because of the buffer inside the `PipedInputStream` which is `1024` by default:
 ```
@@ -27,4 +27,4 @@ The piped outpustream populates the buffer until it fully filled. However becaus
 When the amount of data in the source is less than the buffer size, we do not encounter this issue, thus the output stream is gracefully closed, the "download" job is terminated and the "upload" job is started. In this boundary-case scenario it is enough to have 2 threads in a pool.
 
 Having a proper minimum number of threads in a pool (`3` in this case) perfectly solves the issue: 
-`TestPipeStreamsInConfinedThreadPool#three_threads_should_not_be_blocked_in_a_confined_thread_pool_with_3_threads_for_a_large_block_of_data`
+[`TestPipeStreamsInConfinedThreadPool#three_threads_should_not_be_blocked_in_a_confined_thread_pool_with_3_threads_for_a_large_block_of_data`](https://github.com/Andremoniy/pipedstreamsmultithread/blob/master/src/test/java/com/github/andremoniy/pipestreams/multithread/TestPipeStreamsInConfinedThreadPool.java#L49)
