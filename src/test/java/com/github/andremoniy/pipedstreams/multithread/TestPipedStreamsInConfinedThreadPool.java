@@ -1,4 +1,4 @@
-package com.github.andremoniy.pipestreams.multithread;
+package com.github.andremoniy.pipedstreams.multithread;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class TestPipeStreamsInConfinedThreadPool {
+class TestPipedStreamsInConfinedThreadPool {
 
     @Test
     void three_threads_should_not_be_blocked_in_a_confined_thread_pool_with_2_threads_for_a_small_block_of_data() throws InterruptedException, ExecutionException, TimeoutException {
