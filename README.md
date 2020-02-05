@@ -1,7 +1,7 @@
 # Piped streams multithread 
 ## This is a small demonstration of a Piped Streams issue with a confined thread pool with explanation why it happens and how to solve the issue.
 
-Let us consider a simple case. We have 3 tasks intended to run separate threads conducting the following actions:
+Let us consider the following scenario. We have 3 tasks intended to run separate threads conducting the following actions:
 
 + a "download" job, which writes a stream into a `PipedOutputStream` instance;
 + an "upload" job, which reads from a `PipedInputStream` and sends this data to another consumer;
