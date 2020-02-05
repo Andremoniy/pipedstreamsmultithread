@@ -65,7 +65,7 @@ class TestPipedStreamsInConfinedThreadPool {
                  PipedInputStream pipedInputStream = new PipedInputStream(pipedOutputStream);
                  ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
 
-                final CompletableFuture<Void> uploadCompletableFuture = CompletableFuture.runAsync(() -> {
+                final CompletableFuture<Void> downloadCompletableFuture = CompletableFuture.runAsync(() -> {
                     try {
                         byteArrayInputStream.transferTo(pipedOutputStream);
                         pipedOutputStream.close();
@@ -74,7 +74,7 @@ class TestPipedStreamsInConfinedThreadPool {
                     }
                 }, executorService);
 
-                final CompletableFuture<Void> downloadCompletableFuture = CompletableFuture.runAsync(() -> {
+                final CompletableFuture<Void> uploadCompletableFuture = CompletableFuture.runAsync(() -> {
                     try {
                         pipedInputStream.transferTo(byteArrayOutputStream);
                     } catch (IOException e) {
@@ -83,7 +83,7 @@ class TestPipedStreamsInConfinedThreadPool {
                 }, executorService);
 
                 try {
-                    CompletableFuture.allOf(uploadCompletableFuture, downloadCompletableFuture).get();
+                    CompletableFuture.allOf(downloadCompletableFuture, uploadCompletableFuture).get();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 } catch (ExecutionException e) {
