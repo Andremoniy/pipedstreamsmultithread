@@ -1,5 +1,5 @@
-# pipestreams multithread 
-A small demonstration of Piped Streams issue with a confined thread pool.
+# Piped streams multithread 
+## This is a small demonstration of a Piped Streams issue with a confined thread pool with explanation why it happens and how to solve the issue.
 
 Let us consider a simple case. We have 3 tasks intended to run separate threads conducting the following actions:
 
